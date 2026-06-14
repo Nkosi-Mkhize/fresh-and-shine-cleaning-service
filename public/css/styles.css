@@ -1084,6 +1084,9 @@ th {
 
   .mobile-toggle {
     display: inline-flex;
+    background: var(--blue);
+    border-color: var(--blue);
+    color: var(--white);
   }
 
   .site-header.open .nav-links,
