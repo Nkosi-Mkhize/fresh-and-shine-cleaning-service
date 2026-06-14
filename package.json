@@ -1,0 +1,15 @@
+{
+  "name": "fresh-and-shine-cleaning-service",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Fresh and Shine Cleaning Service website, booking portal, quote requests, and admin lead dashboard.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
