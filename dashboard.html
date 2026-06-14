@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en-ZA">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Customer Dashboard | Fresh and Shine Cleaning Service</title>
+    <meta name="robots" content="noindex">
+    <link rel="stylesheet" href="css/styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="nav-shell">
+        <a class="brand" href="index.html"><img src="assets/logo.jpeg" alt="Fresh and Shine Cleaning Service logo"></a>
+        <div class="nav-actions"><a class="btn btn-primary" href="booking.html">Book Now</a></div>
+        <button class="mobile-toggle" data-mobile-toggle aria-label="Open navigation"><span data-icon="sparkle"></span></button>
+      </div>
+    </header>
+    <main class="dashboard-shell">
+      <aside class="dashboard-sidebar">
+        <nav class="dash-nav" aria-label="Dashboard navigation">
+          <button class="active" type="button" data-dash-tab="dash-home"><span data-icon="home"></span>Home</button>
+          <button type="button" data-dash-tab="dash-profile"><span data-icon="user"></span>Profile</button>
+          <button type="button" data-dash-tab="dash-bookings"><span data-icon="calendar"></span>Bookings</button>
+          <button type="button" data-dash-tab="dash-cleaners"><span data-icon="sparkle"></span>My Cleaners</button>
+          <button type="button" data-dash-tab="dash-locations"><span data-icon="location"></span>Locations</button>
+          <button type="button" data-dash-tab="dash-payments"><span data-icon="card"></span>Payments</button>
+          <button type="button" data-dash-tab="dash-credits"><span data-icon="wallet"></span>Credits</button>
+          <button type="button" data-dash-tab="dash-vouchers"><span data-icon="gift"></span>Vouchers</button>
+          <button type="button" data-dash-tab="dash-referrals"><span data-icon="share"></span>Refer & Earn</button>
+        </nav>
+        <div class="dash-footer">
+          <button type="button" data-logout>Sign Out</button>
+          <a href="contact.html">Help</a>
+          <a href="terms.html">Terms & Conditions</a>
+        </div>
+      </aside>
+      <section class="dashboard-main">
+        <div id="dash-home" class="dash-section active">
+          <span class="eyebrow">Welcome</span>
+          <h1 style="font-size:clamp(2rem,4vw,3.2rem)">Hello, <span data-user-name>client</span>.</h1>
+          <div class="dash-grid">
+            <a class="mini-service" href="booking.html"><span class="icon" data-icon="home"></span><strong>Standard Daily Cleaning</strong></a>
+            <a class="mini-service" href="booking.html"><span class="icon" data-icon="bed"></span><strong>Airbnb Turnover</strong></a>
+            <a class="mini-service" href="quote.html"><span class="icon" data-icon="building"></span><strong>Hotel Quote</strong></a>
+            <a class="mini-service" href="booking.html"><span class="icon" data-icon="sparkle"></span><strong>Laundry & Ironing</strong></a>
+          </div>
+          <div class="grid grid-3">
+            <div class="dash-card"><h3>Upcoming bookings</h3><p><strong data-upcoming-count>0</strong> active or pending bookings.</p></div>
+            <div class="dash-card"><h3>Referral credit</h3><p>Share your code <strong data-ref-code></strong> and reward repeat business.</p></div>
+            <div class="dash-card"><h3>Hospitality clients</h3><p>Request a custom quote for hotels, guesthouses and multi-room properties.</p><a class="btn btn-soft" href="quote.html">Request quote</a></div>
+          </div>
+        </div>
+
+        <div id="dash-profile" class="dash-section">
+          <h2>My Profile</h2>
+          <form class="dash-card form-grid" data-profile-form>
+            <div class="field"><label>Name</label><input name="name" required></div>
+            <div class="field"><label>Email</label><input name="email" type="email" disabled></div>
+            <div class="field"><label>Mobile number</label><input name="phone"></div>
+            <div class="field"><label>Company details</label><input name="company" placeholder="Hotel, guesthouse, office or company"></div>
+            <label class="check-choice full"><input type="checkbox" name="newsletter" checked><span>I want to receive booking updates and offers</span></label>
+            <button class="btn btn-green" type="submit">Save Changes</button>
+            <div class="status-message full"></div>
+          </form>
+        </div>
+
+        <div id="dash-bookings" class="dash-section">
+          <h2>My Bookings</h2>
+          <div class="dash-card table-wrap">
+            <table>
+              <thead><tr><th>Reference</th><th>Service</th><th>Date</th><th>Area</th><th>Estimate</th><th>Payment</th></tr></thead>
+              <tbody data-bookings-body><tr><td colspan="6">Loading bookings...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="dash-cleaners" class="dash-section">
+          <h2>My Cleaners</h2>
+          <div class="dash-card"><h3>No preferred cleaners yet</h3><p>After completed bookings, preferred team members can appear here so repeat clients can request familiar cleaners.</p><a class="btn btn-primary" href="booking.html">Book Now</a></div>
+        </div>
+
+        <div id="dash-locations" class="dash-section">
+          <h2>Saved Locations</h2>
+          <form class="dash-card form-grid" data-location-form>
+            <div class="field"><label>Label</label><input name="label" required placeholder="Home, Office, Hotel, Airbnb"></div>
+            <div class="field"><label>Property type</label><select name="propertyType"><option>House</option><option>Apartment</option><option>Office</option><option>Hotel</option><option>Guesthouse</option><option>Airbnb</option></select></div>
+            <div class="field"><label>City or suburb</label><input name="city" required></div>
+            <div class="field"><label>Address</label><input name="address" required></div>
+            <button class="btn btn-green" type="submit">Add Location</button>
+          </form>
+          <div data-locations-list></div>
+        </div>
+
+        <div id="dash-payments" class="dash-section">
+          <h2>Payment Methods</h2>
+          <div class="dash-card"><h3>Payment options</h3><p>Fresh and Shine supports EFT now, with Yoco and PayFast payment links prepared for production credentials.</p><div class="section-actions"><span class="badge">Yoco</span><span class="badge">PayFast</span><span class="badge">EFT</span></div></div>
+        </div>
+
+        <div id="dash-credits" class="dash-section">
+          <h2>Fresh Credits</h2>
+          <div class="grid grid-3">
+            <form class="dash-card" data-credit-form><h3>Buy Fresh Credits</h3><div class="field"><label>Amount</label><input name="amount" type="number" min="20" max="5000" value="250"></div><button class="btn btn-green" type="submit">Buy Credits</button><div class="status-message"></div></form>
+            <div class="dash-card"><h3>Balance</h3><p style="font-size:2rem;font-weight:800">R0</p><p>Credits can be connected to your payment gateway before launch.</p></div>
+          </div>
+        </div>
+
+        <div id="dash-vouchers" class="dash-section">
+          <h2>Gift Vouchers</h2>
+          <div class="grid grid-3">
+            <div class="dash-card"><h3>Fresh Home</h3><p>Gift a cleaning service to a household or apartment.</p><div class="section-actions"><button class="btn btn-soft">R250</button><button class="btn btn-soft">R500</button><button class="btn btn-soft">R1000</button></div></div>
+            <div class="dash-card"><h3>Host Thank You</h3><p>Perfect for Airbnb hosts and guesthouse teams.</p><div class="section-actions"><button class="btn btn-soft">R500</button><button class="btn btn-soft">R1250</button><button class="btn btn-soft">R5000</button></div></div>
+            <div class="dash-card"><h3>Voucher history</h3><p>No vouchers redeemed yet.</p></div>
+          </div>
+        </div>
+
+        <div id="dash-referrals" class="dash-section">
+          <h2>Refer & Earn</h2>
+          <div class="dash-card">
+            <h3>Share your unique code</h3>
+            <p>Your code: <strong data-ref-code></strong></p>
+            <button class="btn btn-primary" type="button" data-copy-ref>Copy Link</button>
+          </div>
+          <div class="grid grid-3 steps">
+            <div class="card step"><h3>Share</h3><p>Send your code to friends, hosts and colleagues.</p></div>
+            <div class="card step"><h3>They book</h3><p>Your friend uses Fresh and Shine for their first cleaning.</p></div>
+            <div class="card step"><h3>You earn</h3><p>Credits can be added to encourage repeat bookings.</p></div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="js/main.js"></script>
+    <script src="js/dashboard.js"></script>
+  </body>
+</html>

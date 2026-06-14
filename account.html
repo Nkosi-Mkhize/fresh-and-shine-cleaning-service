@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en-ZA">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Client Login | Fresh and Shine Cleaning Service</title>
+    <meta name="description" content="Create an account or log in to manage Fresh and Shine Cleaning Service bookings, saved locations and repeat cleaning requests.">
+    <link rel="stylesheet" href="css/styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="nav-shell">
+        <a class="brand" href="index.html"><img src="assets/logo.jpeg" alt="Fresh and Shine Cleaning Service logo"></a>
+        <nav class="nav-links" aria-label="Main navigation"><a href="index.html">Home</a><a href="services.html">Services</a><a href="booking.html">Book</a><a href="quote.html">Quotes</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
+        <div class="nav-actions"><a class="btn btn-line" href="account.html">Client Login</a><a class="btn btn-green" href="booking.html">Book Now</a></div>
+        <button class="mobile-toggle" data-mobile-toggle aria-label="Open navigation"><span data-icon="sparkle"></span></button>
+      </div>
+    </header>
+    <main class="auth-shell">
+      <section class="auth-media" aria-label="Hotel cleaners"></section>
+      <section class="auth-panel">
+        <div class="form-card">
+          <span class="eyebrow">Client account</span>
+          <h1 style="font-size:clamp(2rem,4vw,3.2rem)">Manage repeat bookings.</h1>
+          <p>Register, log in, save details and view your Fresh and Shine booking history.</p>
+          <button class="btn btn-line btn-wide" type="button" data-google-login>Continue with Google</button>
+          <div class="tabs">
+            <button class="tab active" type="button" data-tab="login-form">Login</button>
+            <button class="tab" type="button" data-tab="register-form">Register</button>
+            <button class="tab" type="button" data-tab="reset-form">Reset</button>
+          </div>
+          <form id="login-form" class="auth-form active" data-login-form>
+            <div class="field"><label for="login-email">Email</label><input id="login-email" name="email" type="email" required></div>
+            <div class="field"><label for="login-password">Password</label><input id="login-password" name="password" type="password" required></div>
+            <button class="btn btn-primary btn-wide" type="submit">Log In</button>
+            <div class="status-message"></div>
+          </form>
+          <form id="register-form" class="auth-form" data-register-form>
+            <div class="field"><label for="reg-name">Full name</label><input id="reg-name" name="name" required></div>
+            <div class="field"><label for="reg-email">Email</label><input id="reg-email" name="email" type="email" required></div>
+            <div class="field"><label for="reg-phone">Mobile number</label><input id="reg-phone" name="phone" placeholder="+27..."></div>
+            <div class="field"><label for="reg-company">Company or hotel name</label><input id="reg-company" name="company"></div>
+            <div class="field"><label for="reg-password">Password</label><input id="reg-password" name="password" type="password" minlength="8" required></div>
+            <button class="btn btn-green btn-wide" type="submit">Create Account</button>
+            <div class="status-message"></div>
+          </form>
+          <form id="reset-form" class="auth-form" data-reset-form>
+            <div class="field"><label for="reset-email">Email</label><input id="reset-email" name="email" type="email" required></div>
+            <button class="btn btn-soft btn-wide" type="submit">Send Reset Link</button>
+            <div class="status-message"></div>
+          </form>
+        </div>
+      </section>
+    </main>
+    <script src="js/main.js"></script>
+    <script src="js/account.js"></script>
+  </body>
+</html>

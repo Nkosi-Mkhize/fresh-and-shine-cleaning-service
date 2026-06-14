@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en-ZA">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Book Cleaning Online | Fresh and Shine Cleaning Service</title>
+    <meta name="description" content="Book Airbnb turnover cleaning, hotel housekeeping, deep cleaning, laundry, office cleaning or home cleaning in South Africa.">
+    <link rel="canonical" href="https://freshandshinecleaningservice.co.za/booking.html">
+    <link rel="stylesheet" href="css/styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="nav-shell">
+        <a class="brand" href="index.html"><img src="assets/logo.jpeg" alt="Fresh and Shine Cleaning Service logo"></a>
+        <nav class="nav-links" aria-label="Main navigation"><a href="index.html">Home</a><a href="services.html">Services</a><a href="booking.html">Book</a><a href="quote.html">Quotes</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
+        <div class="nav-actions"><a class="btn btn-line" href="account.html">Client Login</a><a class="btn btn-green" href="booking.html">Book Now</a></div>
+        <button class="mobile-toggle" data-mobile-toggle aria-label="Open navigation"><span data-icon="sparkle"></span></button>
+      </div>
+    </header>
+    <main>
+      <section class="page-hero image-hero hero-book">
+        <div class="wrap">
+          <span class="eyebrow">Instant booking</span>
+          <h1>Book a cleaning service.</h1>
+          <p>Select your service, property type, date, time, extras and payment preference. Fresh and Shine receives the booking instantly and confirms availability.</p>
+        </div>
+      </section>
+      <section class="section">
+        <div class="form-shell">
+          <form class="form-card" data-booking-form>
+            <div class="stepper" aria-label="Booking steps">
+              <button type="button" class="active">1. Service</button>
+              <button type="button">2. Property</button>
+              <button type="button">3. Schedule</button>
+              <button type="button">4. Payment</button>
+            </div>
+
+            <section class="booking-step active">
+              <h2>Choose your service</h2>
+              <p class="lead">Pick the closest match. Larger hospitality operations can request a custom quotation instead.</p>
+              <div class="choice-grid">
+                <label class="choice"><input type="radio" name="service" value="Standard Daily Cleaning" checked><span>Standard Daily Cleaning</span></label>
+                <label class="choice"><input type="radio" name="service" value="Airbnb Turnover Cleaning"><span>Airbnb Turnover Cleaning</span></label>
+                <label class="choice"><input type="radio" name="service" value="Hotel Housekeeping"><span>Hotel Housekeeping</span></label>
+                <label class="choice"><input type="radio" name="service" value="Deep Cleaning"><span>Deep Cleaning</span></label>
+                <label class="choice"><input type="radio" name="service" value="Laundry & Ironing"><span>Laundry & Ironing</span></label>
+                <label class="choice"><input type="radio" name="service" value="Office Cleaning"><span>Office Cleaning</span></label>
+              </div>
+              <div class="section-actions"><button class="btn btn-primary" type="button" data-next-step>Continue</button></div>
+            </section>
+
+            <section class="booking-step">
+              <h2>Tell us about the property</h2>
+              <div class="choice-grid">
+                <label class="choice"><input type="radio" name="propertyType" value="Airbnb" checked><span>Airbnb</span></label>
+                <label class="choice"><input type="radio" name="propertyType" value="Hotel"><span>Hotel</span></label>
+                <label class="choice"><input type="radio" name="propertyType" value="Guesthouse"><span>Guesthouse</span></label>
+                <label class="choice"><input type="radio" name="propertyType" value="Apartment"><span>Apartment</span></label>
+                <label class="choice"><input type="radio" name="propertyType" value="House"><span>House</span></label>
+                <label class="choice"><input type="radio" name="propertyType" value="Office"><span>Office</span></label>
+              </div>
+              <div class="form-grid" style="margin-top:18px">
+                <div class="field"><label for="rooms">Rooms / bedrooms</label><input id="rooms" name="rooms" type="number" min="1" value="2"></div>
+                <div class="field"><label for="city">City or suburb</label><input id="city" name="city" required placeholder="Johannesburg, Durban, Pretoria, Polokwane"></div>
+                <div class="field full"><label for="address">Address</label><input id="address" name="address" placeholder="Street address or property name"></div>
+              </div>
+              <div class="section-actions"><button class="btn btn-line" type="button" data-prev-step>Back</button><button class="btn btn-primary" type="button" data-next-step>Continue</button></div>
+            </section>
+
+            <section class="booking-step">
+              <h2>Choose schedule and extras</h2>
+              <div class="form-grid">
+                <div class="field"><label for="date">Preferred date</label><input id="date" name="date" type="date" required></div>
+                <div class="field"><label for="time">Preferred time</label><select id="time" name="time" required><option value="">Select time</option><option>07:00</option><option>08:00</option><option>09:00</option><option>10:00</option><option>12:00</option><option>14:00</option><option>16:00</option></select></div>
+                <div class="field full"><label for="frequency">Frequency</label><select id="frequency" name="frequency"><option>Once-off</option><option>Weekly</option><option>Twice weekly</option><option>Daily</option><option>Custom recurring schedule</option></select></div>
+              </div>
+              <h3 style="margin-top:22px">Extra services</h3>
+              <div class="choice-grid" style="margin-top:12px">
+                <label class="check-choice"><input type="checkbox" name="extras" value="Laundry"><span>Laundry</span></label>
+                <label class="check-choice"><input type="checkbox" name="extras" value="Ironing"><span>Ironing</span></label>
+                <label class="check-choice"><input type="checkbox" name="extras" value="Linen replacement"><span>Linen replacement</span></label>
+                <label class="check-choice"><input type="checkbox" name="extras" value="Restocking toiletries"><span>Restocking toiletries</span></label>
+                <label class="check-choice"><input type="checkbox" name="extras" value="Refrigerator cleaning"><span>Refrigerator cleaning</span></label>
+              </div>
+              <div class="section-actions"><button class="btn btn-line" type="button" data-prev-step>Back</button><button class="btn btn-primary" type="button" data-next-step>Continue</button></div>
+            </section>
+
+            <section class="booking-step">
+              <h2>Contact and card payment</h2>
+              <div class="form-grid">
+                <div class="field"><label for="name">Full name</label><input id="name" name="name" required placeholder="Your name"></div>
+                <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" required placeholder="name@example.com"></div>
+                <div class="field"><label for="phone">Mobile number</label><input id="phone" name="phone" required placeholder="+27..."></div>
+                <div class="field"><label for="cardName">Name on card</label><input id="cardName" name="cardName" required autocomplete="cc-name" placeholder="Cardholder name"></div>
+                <div class="field full">
+                  <label>Card details</label>
+                  <div class="card-fields">
+                    <input id="cardNumber" name="cardNumber" inputmode="numeric" autocomplete="cc-number" required placeholder="Card number">
+                    <input id="cardExpiry" name="cardExpiry" inputmode="numeric" autocomplete="cc-exp" required placeholder="MM/YY">
+                    <input id="cardCvv" name="cardCvv" inputmode="numeric" autocomplete="cc-csc" required placeholder="CVV">
+                  </div>
+                  <div class="secure-note"><span data-icon="card"></span><span>Card details are validated for this checkout and are not stored by Fresh and Shine.</span></div>
+                </div>
+                <div class="field full"><label for="notes">Access notes or special instructions</label><textarea id="notes" name="notes" placeholder="Parking, security, pets, linen instructions, arrival notes"></textarea></div>
+              </div>
+              <div class="estimate-box"><div><strong data-estimate>R0</strong><p>Your card will be authorized for this estimated total in the local checkout. Large or custom properties may be adjusted by quote.</p></div><span class="badge">Secure card checkout</span></div>
+              <div class="section-actions"><button class="btn btn-line" type="button" data-prev-step>Back</button><button class="btn btn-green" type="submit">Pay & Submit Booking</button></div>
+              <div class="status-message"></div>
+            </section>
+          </form>
+        </div>
+      </section>
+    </main>
+    <footer class="footer"><div class="footer-grid"><div><img src="assets/logo.jpeg" alt="Fresh and Shine logo"><p>Bookings are sent to Fresh and Shine for confirmation.</p></div><div><h3>Need a quote?</h3><a href="quote.html">Request hotel quote</a></div><div><h3>Account</h3><a href="account.html">Login or register</a></div><div><h3>Email</h3><a href="mailto:info@freshandshinecleaningservice.co.za">info@freshandshinecleaningservice.co.za</a></div></div><div class="footer-bottom"><span>© 2026 Fresh and Shine Cleaning Service.</span><span>South Africa</span></div></footer>
+    <script src="js/main.js"></script>
+    <script src="js/booking.js"></script>
+  </body>
+</html>
