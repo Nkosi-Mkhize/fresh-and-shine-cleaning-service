@@ -12,7 +12,7 @@
     <header class="site-header">
       <div class="nav-shell">
         <a class="brand" href="index.html"><img src="assets/logo.jpeg" alt="Fresh and Shine Cleaning Service logo"></a>
-        <nav class="nav-links" aria-label="Main navigation"><a href="index.html">Home</a><a href="services.html">Services</a><a href="booking.html">Book</a><a href="quote.html">Quotes</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
+        <nav class="nav-links" aria-label="Main navigation"><a href="index.html">Home</a><a href="services.html">Services</a><a href="prices.html">Prices</a><a href="booking.html">Book</a><a href="quote.html">Quotes</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
         <div class="nav-actions"><a class="btn btn-line" href="account.html">Client Login</a><a class="btn btn-green" href="booking.html">Book Now</a></div>
         <button class="mobile-toggle" data-mobile-toggle aria-label="Open navigation"><span data-icon="sparkle"></span></button>
       </div>
@@ -33,6 +33,10 @@
               <div class="field"><label for="hotelName">Hotel / company name</label><input id="hotelName" name="hotelName" required></div>
               <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" required></div>
               <div class="field"><label for="phone">Mobile number</label><input id="phone" name="phone" required placeholder="+27..."></div>
+              <div class="field"><label for="quoteService">Pricelist package</label><select id="quoteService" name="service" data-service-select required></select></div>
+              <div class="field"><label for="quotePriceOption">Package option</label><select id="quotePriceOption" name="priceOption" data-option-select required></select></div>
+              <div class="field"><label for="quoteQuantity">Quantity / hours / visits</label><input id="quoteQuantity" name="quantity" type="number" min="1" value="1" required></div>
+              <div class="field"><label for="quotePricingCategory">Price category</label><input id="quotePricingCategory" name="pricingCategory" data-category-field readonly></div>
               <div class="field"><label for="propertyType">Property type</label><select id="propertyType" name="propertyType"><option>Hotel</option><option>Guesthouse</option><option>Airbnb portfolio</option><option>Office</option><option>Other hospitality property</option></select></div>
               <div class="field"><label for="rooms">Number of rooms</label><input id="rooms" name="rooms" type="number" min="1" required></div>
               <div class="field"><label for="frequency">Frequency required</label><select id="frequency" name="frequency" required><option value="">Select frequency</option><option>Daily</option><option>Several times per week</option><option>Weekly</option><option>After guest checkout</option><option>Custom rota</option></select></div>
@@ -50,6 +54,7 @@
               </div>
               <div class="field full"><label for="notes">Tell us about your cleaning needs</label><textarea id="notes" name="notes" placeholder="Room counts, turnaround times, linen process, staffing needs, preferred start date"></textarea></div>
             </div>
+            <div class="estimate-box"><div><strong data-estimate>R0</strong><p data-estimate-detail>Estimated from the official FreshAndShine pricelist. Custom conditions may change the final quote.</p></div><a class="btn btn-soft" href="prices.html">View Pricelist</a></div>
             <div class="section-actions"><button class="btn btn-green" type="submit">Send Quote Request</button><a class="btn btn-line" href="booking.html">Book standard service</a></div>
             <div class="status-message"></div>
           </form>
