@@ -18,7 +18,7 @@ function renderPricingBoard(data) {
   board.innerHTML = data.groups
     .map(
       (group) => `
-        <section class="price-group" data-animate>
+        <section class="price-group">
           <div class="price-group-head">
             <div>
               <span class="eyebrow">${group.title}</span>
