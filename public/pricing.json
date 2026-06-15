@@ -1,0 +1,193 @@
+{
+  "brand": "FreshAndShine Cleaning Services",
+  "currency": "R",
+  "whatsapp": "27769485673",
+  "groups": [
+    {
+      "title": "Standard Cleaning Services",
+      "summary": "Reliable, guest-ready cleaning for Airbnb properties and turnover routines.",
+      "services": [
+        {
+          "name": "Airbnb Cleaning",
+          "unitLabel": "Property Size",
+          "options": [
+            { "label": "Studio", "price": 600 },
+            { "label": "1 Bedroom", "price": 800 },
+            { "label": "2 Bedrooms", "price": 1550 },
+            { "label": "3 Bedrooms", "price": 1850 },
+            { "label": "4 Bedrooms", "price": 2400 },
+            { "label": "5 Bedrooms", "price": 2950 },
+            { "label": "6 Bedrooms", "price": 3500 }
+          ]
+        },
+        {
+          "name": "Airbnb Turnover Cleaning",
+          "unitLabel": "Number of Rooms",
+          "options": [
+            { "label": "2 Rooms", "price": 1000 },
+            { "label": "3 Rooms", "price": 1500 },
+            { "label": "5 Rooms", "price": 2500 }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Deep Cleaning Services",
+      "summary": "Thorough cleaning for homes, hotels, guesthouses, and high-standard hospitality spaces.",
+      "services": [
+        {
+          "name": "Residential Deep Cleaning",
+          "subtitle": "Apartments / Houses / Homes",
+          "unitLabel": "Property Size",
+          "options": [
+            { "label": "Studio", "price": 1550 },
+            { "label": "1 Bedroom", "price": 2350 },
+            { "label": "2 Bedrooms", "price": 3200 },
+            { "label": "3 Bedrooms", "price": 4050 },
+            { "label": "4 Bedrooms", "price": 5250 },
+            { "label": "5 Bedrooms", "price": 6450 },
+            { "label": "6 Bedrooms", "price": 7250 }
+          ]
+        },
+        {
+          "name": "Hotel Cleaning",
+          "unitLabel": "Property Size",
+          "options": [
+            { "label": "Studio", "price": 600 },
+            { "label": "1 Bedroom", "price": 800 },
+            { "label": "2 Bedrooms", "price": 1550 },
+            { "label": "3 Bedrooms", "price": 1850 },
+            { "label": "4 Bedrooms", "price": 2400 },
+            { "label": "5 Bedrooms", "price": 2950 },
+            { "label": "6 Bedrooms", "price": 3500 }
+          ]
+        },
+        {
+          "name": "Hotel Turnover Cleaning",
+          "unitLabel": "Number of Rooms",
+          "options": [
+            { "label": "2 Rooms", "price": 1000 },
+            { "label": "3 Rooms", "price": 1500 },
+            { "label": "5 Rooms", "price": 2500 }
+          ]
+        },
+        {
+          "name": "Guesthouse Cleaning",
+          "unitLabel": "Property Size",
+          "options": [
+            { "label": "Studio", "price": 600 },
+            { "label": "1 Bedroom", "price": 800 },
+            { "label": "2 Bedrooms", "price": 1550 },
+            { "label": "3 Bedrooms", "price": 1850 },
+            { "label": "4 Bedrooms", "price": 2400 },
+            { "label": "5 Bedrooms", "price": 2950 },
+            { "label": "6 Bedrooms", "price": 3500 }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Laundry & Additional Services",
+      "summary": "Laundry, ironing, blankets, bedding, towels, and linen-support services.",
+      "services": [
+        {
+          "name": "Wash & Iron",
+          "unitLabel": "Basket Size",
+          "options": [
+            { "label": "Small Basket", "price": 300 },
+            { "label": "Medium Basket", "price": 600 },
+            { "label": "Large Basket", "price": 800 }
+          ]
+        },
+        {
+          "name": "Washing Only",
+          "unitLabel": "Basket Size",
+          "options": [
+            { "label": "Small Basket", "price": 200 },
+            { "label": "Medium Basket", "price": 400 },
+            { "label": "Large Basket", "price": 600 }
+          ]
+        },
+        {
+          "name": "Ironing Only",
+          "unitLabel": "Basket Size",
+          "options": [
+            { "label": "Small Basket", "price": 200 },
+            { "label": "Medium Basket", "price": 400 },
+            { "label": "Large Basket", "price": 600 }
+          ]
+        },
+        {
+          "name": "Blankets & Bedding",
+          "unitLabel": "Item",
+          "options": [
+            { "label": "1-Ply Blanket", "price": 200 },
+            { "label": "2-Ply Blanket", "price": 400 },
+            { "label": "Fleece Blanket", "price": 200 },
+            { "label": "Duvet Set", "price": 200 },
+            { "label": "Towels", "price": 100 }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Office Cleaning Services",
+      "summary": "Office, restroom, kitchen, floor care, and special commercial cleaning services.",
+      "services": [
+        {
+          "name": "General Cleaning",
+          "unitLabel": "Service",
+          "options": [
+            { "label": "Emptying trash bins & replacing liners", "price": 300, "unit": "per visit" },
+            { "label": "Dusting & wiping surfaces", "price": 700, "unit": "per hour" },
+            { "label": "Vacuuming & mopping floors", "price": 900, "unit": "per hour" },
+            { "label": "Cleaning windows & glass surfaces", "price": 1300, "unit": "per hour" }
+          ]
+        },
+        {
+          "name": "Restroom Cleaning",
+          "unitLabel": "Service",
+          "options": [
+            { "label": "Sanitizing toilets, sinks & countertops", "price": 600, "unit": "per hour" },
+            { "label": "Refilling soap dispensers & paper towels", "price": 250, "unit": "per visit" },
+            { "label": "Restocking toilet paper", "price": 200, "unit": "per visit" }
+          ]
+        },
+        {
+          "name": "Kitchen & Break Room Cleaning",
+          "unitLabel": "Service",
+          "options": [
+            { "label": "Wiping countertops & appliances", "price": 1000, "unit": "per hour" },
+            { "label": "Cleaning microwaves & refrigerators", "price": 500, "unit": "per visit" },
+            { "label": "Washing dishes & utensils", "price": 600, "unit": "per visit" }
+          ]
+        },
+        {
+          "name": "Floor Care Services",
+          "unitLabel": "Service",
+          "options": [
+            { "label": "Stripping & waxing floors", "price": 1600, "unit": "per hour" },
+            { "label": "Buffing & polishing floors", "price": 1300, "unit": "per hour" },
+            { "label": "Carpet cleaning", "price": 150, "unit": "per square foot" }
+          ]
+        },
+        {
+          "name": "Special Cleaning Services",
+          "unitLabel": "Service",
+          "options": [
+            { "label": "Post-construction cleaning", "price": 2000, "unit": "per hour" },
+            { "label": "Event setup & cleanup", "price": 1500, "unit": "per hour" },
+            { "label": "Upholstery & fabric cleaning", "price": 1700, "unit": "per service" }
+          ]
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Prices are subject to change without prior notice.",
+    "Additional charges may apply depending on the condition and size of the property.",
+    "Full payment is required before the commencement of housekeeping packages.",
+    "Custom quotations are available for hotels, guesthouses, offices, and large-scale cleaning projects.",
+    "Travel fees may apply for locations outside our standard service areas."
+  ]
+}

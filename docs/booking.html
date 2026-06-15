@@ -12,7 +12,7 @@
     <header class="site-header">
       <div class="nav-shell">
         <a class="brand" href="index.html"><img src="assets/logo.jpeg" alt="Fresh and Shine Cleaning Service logo"></a>
-        <nav class="nav-links" aria-label="Main navigation"><a href="index.html">Home</a><a href="services.html">Services</a><a href="booking.html">Book</a><a href="quote.html">Quotes</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
+        <nav class="nav-links" aria-label="Main navigation"><a href="index.html">Home</a><a href="services.html">Services</a><a href="prices.html">Prices</a><a href="booking.html">Book</a><a href="quote.html">Quotes</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
         <div class="nav-actions"><a class="btn btn-line" href="account.html">Client Login</a><a class="btn btn-green" href="booking.html">Book Now</a></div>
         <button class="mobile-toggle" data-mobile-toggle aria-label="Open navigation"><span data-icon="sparkle"></span></button>
       </div>
@@ -22,7 +22,7 @@
         <div class="wrap">
           <span class="eyebrow">Instant booking</span>
           <h1>Book a cleaning service.</h1>
-          <p>Select your service, property type, date, time, extras and payment preference. Fresh and Shine receives the booking instantly and confirms availability.</p>
+          <p>Select your service package, confirm the price, choose your date and pay. Fresh and Shine receives the booking instantly.</p>
         </div>
       </section>
       <section class="section">
@@ -37,15 +37,26 @@
 
             <section class="booking-step active">
               <h2>Choose your service</h2>
-              <p class="lead">Pick the closest match. Larger hospitality operations can request a custom quotation instead.</p>
-              <div class="choice-grid">
-                <label class="choice"><input type="radio" name="service" value="Standard Daily Cleaning" checked><span>Standard Daily Cleaning</span></label>
-                <label class="choice"><input type="radio" name="service" value="Airbnb Turnover Cleaning"><span>Airbnb Turnover Cleaning</span></label>
-                <label class="choice"><input type="radio" name="service" value="Hotel Housekeeping"><span>Hotel Housekeeping</span></label>
-                <label class="choice"><input type="radio" name="service" value="Deep Cleaning"><span>Deep Cleaning</span></label>
-                <label class="choice"><input type="radio" name="service" value="Laundry & Ironing"><span>Laundry & Ironing</span></label>
-                <label class="choice"><input type="radio" name="service" value="Office Cleaning"><span>Office Cleaning</span></label>
+              <p class="lead">Pick from the official FreshAndShine pricelist. The selected price is used for your payment total.</p>
+              <div class="form-grid">
+                <div class="field">
+                  <label for="service">Service package</label>
+                  <select id="service" name="service" data-service-select required></select>
+                </div>
+                <div class="field">
+                  <label for="priceOption">Package option</label>
+                  <select id="priceOption" name="priceOption" data-option-select required></select>
+                </div>
+                <div class="field">
+                  <label for="quantity">Quantity / hours / visits</label>
+                  <input id="quantity" name="quantity" type="number" min="1" value="1" required>
+                </div>
+                <div class="field">
+                  <label for="pricingCategory">Price category</label>
+                  <input id="pricingCategory" name="pricingCategory" data-category-field readonly>
+                </div>
               </div>
+              <div class="estimate-box"><div><strong data-estimate>R0</strong><p data-estimate-detail>Choose a service to calculate the payment total.</p></div><a class="btn btn-soft" href="prices.html">View Pricelist</a></div>
               <div class="section-actions"><button class="btn btn-primary" type="button" data-next-step>Continue</button></div>
             </section>
 
@@ -60,7 +71,7 @@
                 <label class="choice"><input type="radio" name="propertyType" value="Office"><span>Office</span></label>
               </div>
               <div class="form-grid" style="margin-top:18px">
-                <div class="field"><label for="rooms">Rooms / bedrooms</label><input id="rooms" name="rooms" type="number" min="1" value="2"></div>
+                <div class="field"><label for="rooms">Rooms / bedrooms</label><input id="rooms" name="rooms" type="number" min="1" value="1"></div>
                 <div class="field"><label for="city">City or suburb</label><input id="city" name="city" required placeholder="Johannesburg, Durban, Pretoria, Polokwane"></div>
                 <div class="field full"><label for="address">Address</label><input id="address" name="address" placeholder="Street address or property name"></div>
               </div>
@@ -68,20 +79,13 @@
             </section>
 
             <section class="booking-step">
-              <h2>Choose schedule and extras</h2>
+              <h2>Choose schedule</h2>
               <div class="form-grid">
                 <div class="field"><label for="date">Preferred date</label><input id="date" name="date" type="date" required></div>
                 <div class="field"><label for="time">Preferred time</label><select id="time" name="time" required><option value="">Select time</option><option>07:00</option><option>08:00</option><option>09:00</option><option>10:00</option><option>12:00</option><option>14:00</option><option>16:00</option></select></div>
                 <div class="field full"><label for="frequency">Frequency</label><select id="frequency" name="frequency"><option>Once-off</option><option>Weekly</option><option>Twice weekly</option><option>Daily</option><option>Custom recurring schedule</option></select></div>
               </div>
-              <h3 style="margin-top:22px">Extra services</h3>
-              <div class="choice-grid" style="margin-top:12px">
-                <label class="check-choice"><input type="checkbox" name="extras" value="Laundry"><span>Laundry</span></label>
-                <label class="check-choice"><input type="checkbox" name="extras" value="Ironing"><span>Ironing</span></label>
-                <label class="check-choice"><input type="checkbox" name="extras" value="Linen replacement"><span>Linen replacement</span></label>
-                <label class="check-choice"><input type="checkbox" name="extras" value="Restocking toiletries"><span>Restocking toiletries</span></label>
-                <label class="check-choice"><input type="checkbox" name="extras" value="Refrigerator cleaning"><span>Refrigerator cleaning</span></label>
-              </div>
+              <p class="lead">Laundry, ironing, bedding and office add-ons are available as separate priced packages on the pricelist.</p>
               <div class="section-actions"><button class="btn btn-line" type="button" data-prev-step>Back</button><button class="btn btn-primary" type="button" data-next-step>Continue</button></div>
             </section>
 
@@ -91,23 +95,44 @@
                 <div class="field"><label for="name">Full name</label><input id="name" name="name" required placeholder="Your name"></div>
                 <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" required placeholder="name@example.com"></div>
                 <div class="field"><label for="phone">Mobile number</label><input id="phone" name="phone" required placeholder="+27..."></div>
-                <div class="field"><label for="cardName">Name on card</label><input id="cardName" name="cardName" required autocomplete="cc-name" placeholder="Cardholder name"></div>
                 <div class="field full">
+                  <label>Payment option</label>
+                  <div class="wallet-choice-grid">
+                    <label class="choice payment-choice"><input type="radio" name="paymentMethod" value="Card" checked><span><strong>Card</strong><small>Visa / Mastercard</small></span></label>
+                    <label class="choice payment-choice"><input type="radio" name="paymentMethod" value="Google Pay"><span><strong>Google Pay</strong><small>Fast wallet payment</small></span></label>
+                    <label class="choice payment-choice"><input type="radio" name="paymentMethod" value="Apple Pay"><span><strong>Apple Pay</strong><small>Fast wallet payment</small></span></label>
+                  </div>
+                  <div class="wallet-note" data-wallet-note>Wallet payment selected. In production this will open the secure wallet sheet from the payment gateway.</div>
+                </div>
+                <div class="field"><label for="cardName">Name on card</label><input id="cardName" name="cardName" autocomplete="cc-name" placeholder="Cardholder name"></div>
+                <div class="field full" data-card-fields>
                   <label>Card details</label>
                   <div class="card-fields">
-                    <input id="cardNumber" name="cardNumber" inputmode="numeric" autocomplete="cc-number" required placeholder="Card number">
-                    <input id="cardExpiry" name="cardExpiry" inputmode="numeric" autocomplete="cc-exp" required placeholder="MM/YY">
-                    <input id="cardCvv" name="cardCvv" inputmode="numeric" autocomplete="cc-csc" required placeholder="CVV">
+                    <input id="cardNumber" name="cardNumber" inputmode="numeric" autocomplete="cc-number" placeholder="Card number">
+                    <input id="cardExpiry" name="cardExpiry" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/YY">
+                    <input id="cardCvv" name="cardCvv" inputmode="numeric" autocomplete="cc-csc" placeholder="CVV">
                   </div>
                   <div class="secure-note"><span data-icon="card"></span><span>Card details are validated for this checkout and are not stored by Fresh and Shine.</span></div>
                 </div>
                 <div class="field full"><label for="notes">Access notes or special instructions</label><textarea id="notes" name="notes" placeholder="Parking, security, pets, linen instructions, arrival notes"></textarea></div>
               </div>
-              <div class="estimate-box"><div><strong data-estimate>R0</strong><p>Your card will be authorized for this estimated total in the local checkout. Large or custom properties may be adjusted by quote.</p></div><span class="badge">Secure card checkout</span></div>
+              <div class="estimate-box"><div><strong data-estimate>R0</strong><p data-estimate-detail>Your official FreshAndShine selected price.</p></div><span class="badge">Payment required before service</span></div>
               <div class="section-actions"><button class="btn btn-line" type="button" data-prev-step>Back</button><button class="btn btn-green" type="submit">Pay & Submit Booking</button></div>
               <div class="status-message"></div>
             </section>
           </form>
+          <section class="payment-success" data-payment-success id="payment-success">
+            <div class="card">
+              <span class="eyebrow">Thank you</span>
+              <h2>Thank you for your booking.</h2>
+              <p>Your booking has been received. Please send proof of payment to our WhatsApp so the Fresh and Shine team can confirm your service.</p>
+              <p><strong data-success-reference></strong></p>
+              <div class="section-actions">
+                <a class="btn whatsapp-btn" data-whatsapp-proof target="_blank" rel="noopener">Send Proof on WhatsApp</a>
+                <a class="btn btn-line" href="booking.html">Make Another Booking</a>
+              </div>
+            </div>
+          </section>
         </div>
       </section>
     </main>

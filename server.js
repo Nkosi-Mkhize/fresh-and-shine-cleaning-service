@@ -158,20 +158,37 @@ function createSession(userId) {
   return session;
 }
 
-function estimateBooking(payload) {
-  const base = {
-    "Standard Daily Cleaning": 520,
-    "Airbnb Turnover Cleaning": 780,
-    "Hotel Housekeeping": 1200,
-    "Deep Cleaning": 1450,
-    "Laundry & Ironing": 420,
-    "Office Cleaning": 900
-  };
-  const extras = Array.isArray(payload.extras) ? payload.extras : [];
-  const extraPrice = extras.length * 120;
-  const rooms = Math.max(Number(payload.rooms || 1), 1);
-  const roomFactor = payload.propertyType === "Hotel" || payload.propertyType === "Guesthouse" ? rooms * 90 : Math.max(rooms - 2, 0) * 80;
-  return (base[payload.service] || 600) + extraPrice + roomFactor;
+function loadPricingData() {
+  return JSON.parse(fs.readFileSync(path.join(PUBLIC_DIR, "pricing.json"), "utf8"));
+}
+
+function pricingSelection(payload) {
+  const data = loadPricingData();
+  const serviceName = clean(payload.service);
+  const optionLabel = clean(payload.priceOption);
+  for (const group of data.groups) {
+    const service = group.services.find((item) => item.name === serviceName);
+    if (!service) continue;
+    const option = service.options.find((item) => item.label === optionLabel);
+    if (!option) {
+      const err = new Error("Selected price option is not available for this service.");
+      err.status = 400;
+      throw err;
+    }
+    const quantity = Math.max(Number(payload.quantity || 1), 1);
+    return {
+      group: group.title,
+      service: service.name,
+      option: option.label,
+      unit: option.unit || "",
+      quantity,
+      unitPrice: Number(option.price),
+      total: Number(option.price) * quantity
+    };
+  }
+  const err = new Error("Selected service is not available in the FreshAndShine pricelist.");
+  err.status = 400;
+  throw err;
 }
 
 function onlyDigits(value) {
@@ -214,26 +231,43 @@ function parseExpiry(expiry) {
   return { month, year };
 }
 
-function validateCardPayment(payload, amount) {
-  const payment = payload.card || {};
-  requireFields(payment, ["cardName", "cardNumber", "cardExpiry", "cardCvv"]);
-  const digits = onlyDigits(payment.cardNumber);
-  const cvv = onlyDigits(payment.cardCvv);
-  const expiry = parseExpiry(payment.cardExpiry);
-  if (!luhnValid(digits)) {
-    const err = new Error("Card number is invalid. Use a valid card number or gateway test card.");
+function validatePayment(payload, amount) {
+  const method = clean(payload.paymentMethod) || "Card";
+  const allowedMethods = ["Card", "Google Pay", "Apple Pay"];
+  if (!allowedMethods.includes(method)) {
+    const err = new Error("Selected payment method is not supported.");
     err.status = 402;
     throw err;
   }
-  if (!expiry) {
-    const err = new Error("Card expiry is invalid or expired.");
-    err.status = 402;
-    throw err;
-  }
-  if (cvv.length < 3 || cvv.length > 4) {
-    const err = new Error("Card security code is invalid.");
-    err.status = 402;
-    throw err;
+
+  let brand = method;
+  let last4 = "";
+  let cardholder = "";
+
+  if (method === "Card") {
+    const payment = payload.card || {};
+    requireFields(payment, ["cardName", "cardNumber", "cardExpiry", "cardCvv"]);
+    const digits = onlyDigits(payment.cardNumber);
+    const cvv = onlyDigits(payment.cardCvv);
+    const expiry = parseExpiry(payment.cardExpiry);
+    if (!luhnValid(digits)) {
+      const err = new Error("Card number is invalid. Use a valid card number or gateway test card.");
+      err.status = 402;
+      throw err;
+    }
+    if (!expiry) {
+      const err = new Error("Card expiry is invalid or expired.");
+      err.status = 402;
+      throw err;
+    }
+    if (cvv.length < 3 || cvv.length > 4) {
+      const err = new Error("Card security code is invalid.");
+      err.status = 402;
+      throw err;
+    }
+    brand = cardBrand(digits);
+    last4 = digits.slice(-4);
+    cardholder = clean(payment.cardName);
   }
 
   const payments = readJson(dataFiles.payments);
@@ -243,10 +277,10 @@ function validateCardPayment(payload, amount) {
     amount,
     currency: "ZAR",
     status: "Paid",
-    mode: "Local card checkout",
-    brand: cardBrand(digits),
-    last4: digits.slice(-4),
-    cardholder: clean(payment.cardName),
+    mode: method === "Card" ? "Local card checkout" : `Local ${method} checkout`,
+    brand,
+    last4,
+    cardholder,
     createdAt: new Date().toISOString()
   };
   payments.unshift(paymentRecord);
@@ -425,10 +459,11 @@ async function handleApi(req, res, pathname) {
 
     if (req.method === "POST" && pathname === "/api/bookings") {
       const payload = await getBody(req);
-      requireFields(payload, ["name", "email", "phone", "service", "propertyType", "date", "time", "city"]);
+      requireFields(payload, ["name", "email", "phone", "service", "priceOption", "quantity", "propertyType", "date", "time", "city"]);
       const user = getSessionUser(req);
-      const estimatedTotal = estimateBooking(payload);
-      const paymentRecord = validateCardPayment(payload, estimatedTotal);
+      const pricing = pricingSelection(payload);
+      const estimatedTotal = pricing.total;
+      const paymentRecord = validatePayment(payload, estimatedTotal);
       const booking = {
         id: crypto.randomUUID(),
         reference: reference("FSB"),
@@ -436,7 +471,12 @@ async function handleApi(req, res, pathname) {
         name: clean(payload.name),
         email: clean(payload.email).toLowerCase(),
         phone: clean(payload.phone),
-        service: clean(payload.service),
+        service: pricing.service,
+        pricingCategory: pricing.group,
+        priceOption: pricing.option,
+        quantity: pricing.quantity,
+        unitPrice: pricing.unitPrice,
+        priceUnit: pricing.unit,
         propertyType: clean(payload.propertyType),
         address: clean(payload.address),
         city: clean(payload.city),
@@ -444,8 +484,7 @@ async function handleApi(req, res, pathname) {
         frequency: clean(payload.frequency) || "Once-off",
         date: clean(payload.date),
         time: clean(payload.time),
-        extras: Array.isArray(payload.extras) ? payload.extras.map(clean).filter(Boolean) : [],
-        paymentMethod: "Card",
+        paymentMethod: paymentRecord.brand === "Google Pay" || paymentRecord.brand === "Apple Pay" ? paymentRecord.brand : "Card",
         paymentStatus: "Paid",
         paymentReference: paymentRecord.reference,
         cardBrand: paymentRecord.brand,
@@ -464,7 +503,8 @@ async function handleApi(req, res, pathname) {
 
     if (req.method === "POST" && pathname === "/api/quotes") {
       const payload = await getBody(req);
-      requireFields(payload, ["contactName", "email", "phone", "hotelName", "rooms", "frequency", "city"]);
+      requireFields(payload, ["contactName", "email", "phone", "hotelName", "service", "priceOption", "quantity", "rooms", "frequency", "city"]);
+      const pricing = pricingSelection(payload);
       const quote = {
         id: crypto.randomUUID(),
         reference: reference("FSQ"),
@@ -472,6 +512,13 @@ async function handleApi(req, res, pathname) {
         email: clean(payload.email).toLowerCase(),
         phone: clean(payload.phone),
         hotelName: clean(payload.hotelName),
+        service: pricing.service,
+        pricingCategory: pricing.group,
+        priceOption: pricing.option,
+        quantity: pricing.quantity,
+        unitPrice: pricing.unitPrice,
+        priceUnit: pricing.unit,
+        estimatedTotal: pricing.total,
         propertyType: clean(payload.propertyType),
         rooms: clean(payload.rooms),
         frequency: clean(payload.frequency),
