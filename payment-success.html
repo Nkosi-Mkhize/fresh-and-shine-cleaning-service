@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en-ZA">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Payment Received | Fresh and Shine Cleaning Service</title>
+    <meta name="robots" content="noindex">
+    <link rel="stylesheet" href="css/styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="nav-shell">
+        <a class="brand" href="index.html"><img src="assets/logo.jpeg" alt="Fresh and Shine Cleaning Service logo"></a>
+        <nav class="nav-links" aria-label="Main navigation"><a href="index.html">Home</a><a href="services.html">Services</a><a href="prices.html">Prices</a><a href="booking.html">Book</a><a href="quote.html">Quotes</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
+        <div class="nav-actions"><a class="btn btn-line" href="account.html">Client Login</a><a class="btn btn-green" href="booking.html">Book Now</a></div>
+        <button class="mobile-toggle" data-mobile-toggle aria-label="Open navigation"><span data-icon="sparkle"></span></button>
+      </div>
+    </header>
+    <main>
+      <section class="section">
+        <div class="form-shell">
+          <div class="form-card payment-success show">
+            <span class="eyebrow">Payment submitted</span>
+            <h1>Thank you for your booking.</h1>
+            <p>PayFast is confirming your payment with Fresh and Shine. Your booking will be marked as paid once the secure PayFast notification is received.</p>
+            <p><strong data-payment-reference></strong></p>
+            <div class="section-actions">
+              <a class="btn btn-primary" href="dashboard.html">View Dashboard</a>
+              <a class="btn btn-line" href="booking.html">Make Another Booking</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="js/main.js"></script>
+    <script>
+      const params = new URLSearchParams(location.search);
+      const reference = params.get("reference") || "";
+      const node = document.querySelector("[data-payment-reference]");
+      if (node && reference) node.textContent = `Booking reference: ${reference}`;
+    </script>
+  </body>
+</html>
