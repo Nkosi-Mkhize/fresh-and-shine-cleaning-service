@@ -100,49 +100,6 @@ function populatePricingControls(form) {
   updateOptions();
 }
 
-function setupPaymentMethod(form) {
-  const paymentInputs = Array.from(form.querySelectorAll("input[name='paymentMethod']"));
-  const cardFields = form.querySelector("[data-card-fields]");
-  const cardName = form.cardName;
-  const walletNote = form.querySelector("[data-wallet-note]");
-  const cardInputs = [cardName, form.cardNumber, form.cardExpiry, form.cardCvv].filter(Boolean);
-
-  const update = () => {
-    const method = form.querySelector("input[name='paymentMethod']:checked")?.value || "Card";
-    const isCard = method === "Card";
-    if (cardFields) cardFields.style.display = isCard ? "" : "none";
-    if (cardName?.closest(".field")) cardName.closest(".field").style.display = isCard ? "" : "none";
-    if (walletNote) walletNote.classList.toggle("show", !isCard);
-    cardInputs.forEach((input) => {
-      input.required = isCard;
-      if (!isCard) input.value = "";
-    });
-  };
-
-  paymentInputs.forEach((input) => input.addEventListener("change", update));
-  update();
-}
-
-function setupCardFormatting(form) {
-  const cardNumber = form.querySelector("[name='cardNumber']");
-  const cardExpiry = form.querySelector("[name='cardExpiry']");
-  const cardCvv = form.querySelector("[name='cardCvv']");
-
-  cardNumber?.addEventListener("input", () => {
-    const digits = cardNumber.value.replace(/\D/g, "").slice(0, 19);
-    cardNumber.value = digits.replace(/(\d{4})(?=\d)/g, "$1 ").trim();
-  });
-
-  cardExpiry?.addEventListener("input", () => {
-    const digits = cardExpiry.value.replace(/\D/g, "").slice(0, 4);
-    cardExpiry.value = digits.length > 2 ? `${digits.slice(0, 2)}/${digits.slice(2)}` : digits;
-  });
-
-  cardCvv?.addEventListener("input", () => {
-    cardCvv.value = cardCvv.value.replace(/\D/g, "").slice(0, 4);
-  });
-}
-
 function showPaymentSuccess(result) {
   const panel = document.querySelector("[data-payment-success]");
   if (!panel) return;
@@ -159,13 +116,28 @@ function showPaymentSuccess(result) {
   panel.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+function submitPayfast(payfast) {
+  if (!payfast?.action || !payfast?.fields) throw new Error("PayFast checkout details were not returned.");
+  const form = document.createElement("form");
+  form.method = "POST";
+  form.action = payfast.action;
+  form.style.display = "none";
+  Object.entries(payfast.fields).forEach(([key, value]) => {
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = key;
+    input.value = value;
+    form.appendChild(input);
+  });
+  document.body.appendChild(form);
+  form.submit();
+}
+
 async function initBookingForm() {
   const bookingForm = document.querySelector("[data-booking-form]");
   if (!bookingForm) return;
   await loadPricing();
   populatePricingControls(bookingForm);
-  setupCardFormatting(bookingForm);
-  setupPaymentMethod(bookingForm);
 
   bookingForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -175,26 +147,14 @@ async function initBookingForm() {
     try {
       const payload = formToObject(bookingForm);
       payload.estimatedTotal = pricingTotal(bookingForm);
-      payload.paymentMethod = bookingForm.querySelector("input[name='paymentMethod']:checked")?.value || "Card";
-      if (payload.paymentMethod === "Card") {
-        payload.card = {
-          cardName: payload.cardName,
-          cardNumber: payload.cardNumber,
-          cardExpiry: payload.cardExpiry,
-          cardCvv: payload.cardCvv
-        };
-      }
-      delete payload.cardName;
-      delete payload.cardNumber;
-      delete payload.cardExpiry;
-      delete payload.cardCvv;
+      payload.paymentMethod = "PayFast";
 
       const result = await postData("/api/bookings", payload);
-      showMessage(message, `Payment approved. ${result.message} Reference: ${result.booking.reference}`);
-      bookingForm.reset();
-      setStep(0);
-      populatePricingControls(bookingForm);
-      setupPaymentMethod(bookingForm);
+      showMessage(message, `${result.message} Reference: ${result.booking.reference}`);
+      if (result.payfast) {
+        submitPayfast(result.payfast);
+        return;
+      }
       showPaymentSuccess(result);
     } catch (error) {
       showMessage(message, error.message, "error");

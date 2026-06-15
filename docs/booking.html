@@ -90,29 +90,15 @@
             </section>
 
             <section class="booking-step">
-              <h2>Contact and card payment</h2>
+              <h2>Contact and secure PayFast payment</h2>
               <div class="form-grid">
                 <div class="field"><label for="name">Full name</label><input id="name" name="name" required placeholder="Your name"></div>
                 <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" required placeholder="name@example.com"></div>
                 <div class="field"><label for="phone">Mobile number</label><input id="phone" name="phone" required placeholder="+27..."></div>
                 <div class="field full">
-                  <label>Payment option</label>
-                  <div class="wallet-choice-grid">
-                    <label class="choice payment-choice"><input type="radio" name="paymentMethod" value="Card" checked><span><strong>Card</strong><small>Visa / Mastercard</small></span></label>
-                    <label class="choice payment-choice"><input type="radio" name="paymentMethod" value="Google Pay"><span><strong>Google Pay</strong><small>Fast wallet payment</small></span></label>
-                    <label class="choice payment-choice"><input type="radio" name="paymentMethod" value="Apple Pay"><span><strong>Apple Pay</strong><small>Fast wallet payment</small></span></label>
-                  </div>
-                  <div class="wallet-note" data-wallet-note>Wallet payment selected. In production this will open the secure wallet sheet from the payment gateway.</div>
-                </div>
-                <div class="field"><label for="cardName">Name on card</label><input id="cardName" name="cardName" autocomplete="cc-name" placeholder="Cardholder name"></div>
-                <div class="field full" data-card-fields>
-                  <label>Card details</label>
-                  <div class="card-fields">
-                    <input id="cardNumber" name="cardNumber" inputmode="numeric" autocomplete="cc-number" placeholder="Card number">
-                    <input id="cardExpiry" name="cardExpiry" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/YY">
-                    <input id="cardCvv" name="cardCvv" inputmode="numeric" autocomplete="cc-csc" placeholder="CVV">
-                  </div>
-                  <div class="secure-note"><span data-icon="card"></span><span>Card details are validated for this checkout and are not stored by Fresh and Shine.</span></div>
+                  <label>Payment gateway</label>
+                  <input type="hidden" name="paymentMethod" value="PayFast">
+                  <div class="secure-note"><span data-icon="card"></span><span>You will be redirected to PayFast to complete payment securely by card, Instant EFT, or any supported PayFast method.</span></div>
                 </div>
                 <div class="field full"><label for="notes">Access notes or special instructions</label><textarea id="notes" name="notes" placeholder="Parking, security, pets, linen instructions, arrival notes"></textarea></div>
               </div>

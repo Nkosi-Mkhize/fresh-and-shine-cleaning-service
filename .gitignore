@@ -1,5 +1,7 @@
 node_modules/
 data/*.json
 .env
+public/api/config.php
+docs/api/config.php
 .DS_Store
 Thumbs.db
