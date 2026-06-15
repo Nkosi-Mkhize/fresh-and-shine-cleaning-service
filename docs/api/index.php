@@ -134,6 +134,50 @@ function ensure_schema(PDO $pdo): void
             status VARCHAR(40) NOT NULL DEFAULT 'New',
             created_at DATETIME NOT NULL
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
+        "CREATE TABLE IF NOT EXISTS job_applications (
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            reference VARCHAR(40) NOT NULL UNIQUE,
+            referral_code VARCHAR(80) NULL,
+            first_name VARCHAR(120) NOT NULL,
+            surname VARCHAR(120) NOT NULL,
+            email VARCHAR(190) NOT NULL,
+            phone VARCHAR(60) NOT NULL,
+            id_number VARCHAR(80) NULL,
+            gender VARCHAR(40) NULL,
+            date_of_birth DATE NULL,
+            country VARCHAR(120) NULL,
+            province VARCHAR(120) NULL,
+            city VARCHAR(160) NOT NULL,
+            street_address VARCHAR(255) NULL,
+            suburb VARCHAR(160) NULL,
+            postal_code VARCHAR(40) NULL,
+            roles LONGTEXT NULL,
+            work_days LONGTEXT NULL,
+            work_areas LONGTEXT NULL,
+            work_type LONGTEXT NULL,
+            qualifications LONGTEXT NULL,
+            skills LONGTEXT NULL,
+            years_experience VARCHAR(80) NULL,
+            client1_name VARCHAR(160) NULL,
+            client1_phone VARCHAR(80) NULL,
+            client2_name VARCHAR(160) NULL,
+            client2_phone VARCHAR(80) NULL,
+            client3_name VARCHAR(160) NULL,
+            client3_phone VARCHAR(80) NULL,
+            describe_me TEXT NULL,
+            grew_up_country VARCHAR(120) NULL,
+            grew_up_city VARCHAR(160) NULL,
+            hobbies TEXT NULL,
+            other_languages VARCHAR(255) NULL,
+            motivation TEXT NULL,
+            eligibility LONGTEXT NULL,
+            consent TINYINT(1) NOT NULL DEFAULT 0,
+            status VARCHAR(40) NOT NULL DEFAULT 'New',
+            created_at DATETIME NOT NULL,
+            updated_at DATETIME NOT NULL,
+            INDEX job_applications_reference (reference),
+            INDEX job_applications_email (email)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci",
         "CREATE TABLE IF NOT EXISTS payments (
             id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             booking_reference VARCHAR(40) NOT NULL,
@@ -217,6 +261,15 @@ function require_fields(array $payload, array $fields): void
     if ($missing) {
         json_response(400, ['error' => 'Missing required field: ' . implode(', ', $missing)]);
     }
+}
+
+function payload_list(array $payload, string $field): array
+{
+    $value = $payload[$field] ?? [];
+    if (!is_array($value)) {
+        $value = [$value];
+    }
+    return array_values(array_filter(array_map('clean', $value), fn(string $item): bool => $item !== ''));
 }
 
 function now_sql(): string
@@ -620,6 +673,133 @@ function handle_contact(): void
     json_response(201, ['message' => 'Message received. Fresh and Shine will contact you shortly.', 'reference' => $reference]);
 }
 
+function handle_job_application(): void
+{
+    $payload = request_payload();
+    require_fields($payload, [
+        'firstName',
+        'surname',
+        'email',
+        'phone',
+        'idNumber',
+        'city',
+        'streetAddress',
+        'suburb',
+        'postalCode',
+        'yearsExperience',
+        'client1Name',
+        'client1Phone',
+        'describeMe',
+        'motivation',
+    ]);
+
+    $roles = payload_list($payload, 'roles');
+    $eligibility = payload_list($payload, 'eligibility');
+    $workDays = payload_list($payload, 'workDays');
+    $workAreas = payload_list($payload, 'workAreas');
+    $workType = payload_list($payload, 'workType');
+    $qualifications = payload_list($payload, 'qualifications');
+    $skills = payload_list($payload, 'skills');
+
+    if (!$roles) {
+        json_response(400, ['error' => 'Please select at least one service you want to apply for.']);
+    }
+    if (count($eligibility) < 5) {
+        json_response(400, ['error' => 'Please confirm the screening requirements.']);
+    }
+    if (count($workDays) < 2) {
+        json_response(400, ['error' => 'Please select at least two available work days.']);
+    }
+    if (!$workAreas) {
+        json_response(400, ['error' => 'Please select at least one area you can work in.']);
+    }
+    if (!$skills) {
+        json_response(400, ['error' => 'Please select at least one cleaning skill.']);
+    }
+    if (clean($payload['consent'] ?? '') === '') {
+        json_response(400, ['error' => 'Please confirm consent before submitting.']);
+    }
+
+    $reference = make_reference('FSJ', 'job_applications');
+    $now = now_sql();
+
+    $stmt = db()->prepare('INSERT INTO job_applications
+        (reference, referral_code, first_name, surname, email, phone, id_number, gender, date_of_birth, country, province, city, street_address, suburb, postal_code, roles, work_days, work_areas, work_type, qualifications, skills, years_experience, client1_name, client1_phone, client2_name, client2_phone, client3_name, client3_phone, describe_me, grew_up_country, grew_up_city, hobbies, other_languages, motivation, eligibility, consent, status, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+    $stmt->execute([
+        $reference,
+        clean($payload['referralCode'] ?? ''),
+        clean($payload['firstName']),
+        clean($payload['surname']),
+        strtolower(clean($payload['email'])),
+        clean($payload['phone']),
+        clean($payload['idNumber']),
+        clean($payload['gender'] ?? ''),
+        clean($payload['dateOfBirth'] ?? '') ?: null,
+        clean($payload['country'] ?? ''),
+        clean($payload['province'] ?? ''),
+        clean($payload['city']),
+        clean($payload['streetAddress']),
+        clean($payload['suburb']),
+        clean($payload['postalCode']),
+        json_encode($roles, JSON_FLAGS),
+        json_encode($workDays, JSON_FLAGS),
+        json_encode($workAreas, JSON_FLAGS),
+        json_encode($workType, JSON_FLAGS),
+        json_encode($qualifications, JSON_FLAGS),
+        json_encode($skills, JSON_FLAGS),
+        clean($payload['yearsExperience']),
+        clean($payload['client1Name']),
+        clean($payload['client1Phone']),
+        clean($payload['client2Name'] ?? ''),
+        clean($payload['client2Phone'] ?? ''),
+        clean($payload['client3Name'] ?? ''),
+        clean($payload['client3Phone'] ?? ''),
+        clean($payload['describeMe']),
+        clean($payload['grewUpCountry'] ?? ''),
+        clean($payload['grewUpCity'] ?? ''),
+        clean($payload['hobbies'] ?? ''),
+        clean($payload['otherLanguages'] ?? ''),
+        clean($payload['motivation']),
+        json_encode($eligibility, JSON_FLAGS),
+        1,
+        'New',
+        $now,
+        $now,
+    ]);
+
+    $name = clean($payload['firstName']) . ' ' . clean($payload['surname']);
+    $emailBody = implode("\n", [
+        "Reference: {$reference}",
+        "Applicant: {$name}",
+        "Email: " . clean($payload['email']),
+        "Phone: " . clean($payload['phone']),
+        "City/Suburb: " . clean($payload['city']) . ' / ' . clean($payload['suburb']),
+        "Roles: " . implode(', ', $roles),
+        "Available days: " . implode(', ', $workDays),
+        "Work areas: " . implode(', ', $workAreas),
+        "Work type: " . implode(', ', $workType),
+        "Qualifications: " . implode(', ', $qualifications),
+        "Skills: " . implode(', ', $skills),
+        "Experience: " . clean($payload['yearsExperience']),
+        "Reference 1: " . clean($payload['client1Name']) . ' - ' . clean($payload['client1Phone']),
+        "Reference 2: " . clean($payload['client2Name'] ?? '') . ' - ' . clean($payload['client2Phone'] ?? ''),
+        "Reference 3: " . clean($payload['client3Name'] ?? '') . ' - ' . clean($payload['client3Phone'] ?? ''),
+        "Description: " . clean($payload['describeMe']),
+        "Motivation: " . clean($payload['motivation']),
+    ]);
+
+    notify_admin('New FreshAndShine job application: ' . $reference, $emailBody);
+
+    json_response(201, [
+        'message' => 'Application received. Fresh and Shine will review your details.',
+        'application' => [
+            'reference' => $reference,
+            'status' => 'New',
+        ],
+    ]);
+}
+
 function handle_payfast_itn(): void
 {
     $payload = $_POST;
@@ -722,7 +902,8 @@ function handle_admin_records(): void
     $bookings = $pdo->query('SELECT reference, name, email, phone, service, property_type AS propertyType, city, service_date AS date, service_time AS time, status, created_at AS createdAt FROM bookings ORDER BY created_at DESC LIMIT 100')->fetchAll();
     $quotes = $pdo->query('SELECT reference, contact_name AS contactName, email, phone, hotel_name AS hotelName, property_type AS propertyType, city, status, created_at AS createdAt FROM quotes ORDER BY created_at DESC LIMIT 100')->fetchAll();
     $contacts = $pdo->query('SELECT reference, name, email, phone, message AS service, status, created_at AS createdAt FROM contacts ORDER BY created_at DESC LIMIT 100')->fetchAll();
-    json_response(200, ['bookings' => $bookings, 'quotes' => $quotes, 'contacts' => $contacts]);
+    $jobApplications = $pdo->query("SELECT reference, CONCAT(first_name, ' ', surname) AS name, email, phone, CONCAT('Job application: ', years_experience) AS service, city, status, created_at AS createdAt FROM job_applications ORDER BY created_at DESC LIMIT 100")->fetchAll();
+    json_response(200, ['bookings' => $bookings, 'quotes' => $quotes, 'contacts' => $contacts, 'jobApplications' => $jobApplications]);
 }
 
 try {
@@ -765,6 +946,9 @@ try {
     }
     if ($method === 'POST' && $route === 'contact') {
         handle_contact();
+    }
+    if ($method === 'POST' && $route === 'job-applications') {
+        handle_job_application();
     }
     if ($method === 'POST' && $route === 'payfast/itn') {
         handle_payfast_itn();

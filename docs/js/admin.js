@@ -28,6 +28,7 @@ async function loadAdmin() {
     const rows = [
       ...(data.bookings || []).map((item) => row(item, "booking")),
       ...(data.quotes || []).map((item) => row(item, "quote")),
+      ...(data.jobApplications || []).map((item) => row(item, "job application")),
       ...(data.contacts || []).map((item) => row(item, "contact"))
     ];
     body.innerHTML = rows.length ? rows.join("") : `<tr><td colspan="6">No records yet.</td></tr>`;

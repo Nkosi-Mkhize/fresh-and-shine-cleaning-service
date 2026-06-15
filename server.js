@@ -34,6 +34,7 @@ const dataFiles = {
   bookings: path.join(DATA_DIR, "bookings.json"),
   quotes: path.join(DATA_DIR, "quotes.json"),
   contacts: path.join(DATA_DIR, "contacts.json"),
+  jobApplications: path.join(DATA_DIR, "job-applications.json"),
   payments: path.join(DATA_DIR, "payments.json"),
   notifications: path.join(DATA_DIR, "notifications.json")
 };
@@ -101,6 +102,12 @@ function getBody(req) {
 
 function clean(value) {
   return String(value || "").trim();
+}
+
+function payloadList(payload, key) {
+  const value = payload[key] || [];
+  const list = Array.isArray(value) ? value : [value];
+  return list.map(clean).filter(Boolean);
 }
 
 function requireFields(payload, fields) {
@@ -365,18 +372,18 @@ function recordNotification(type, record, results) {
 }
 
 async function notifyAdmin(type, record) {
-  const subject = type === "booking" ? `New booking ${record.reference}` : type === "quote" ? `New quote request ${record.reference}` : `New website enquiry ${record.reference}`;
+  const subject = type === "booking" ? `New booking ${record.reference}` : type === "quote" ? `New quote request ${record.reference}` : type === "job-application" ? `New job application ${record.reference}` : `New website enquiry ${record.reference}`;
   const html = `
     <h1>${subject}</h1>
     <p><strong>Name:</strong> ${record.name || record.contactName}</p>
     <p><strong>Email:</strong> ${record.email}</p>
     <p><strong>Phone:</strong> ${record.phone}</p>
-    <p><strong>Service:</strong> ${record.service || "Custom quotation"}</p>
-    <p><strong>Property:</strong> ${record.propertyType || record.hotelName || "Not supplied"}</p>
+    <p><strong>Service:</strong> ${record.service || record.roles?.join(", ") || "Custom quotation"}</p>
+    <p><strong>Property:</strong> ${record.propertyType || record.hotelName || record.city || "Not supplied"}</p>
     <p><strong>Date:</strong> ${record.date || "Not supplied"} ${record.time || ""}</p>
-    <p><strong>Notes:</strong> ${record.notes || record.message || "None"}</p>
+    <p><strong>Notes:</strong> ${record.notes || record.message || record.motivation || "None"}</p>
   `;
-  const sms = `${subject}: ${record.name || record.contactName}, ${record.service || record.hotelName || "Custom request"}, ${record.phone}, ${record.email}`;
+  const sms = `${subject}: ${record.name || record.contactName}, ${record.service || record.roles?.join(", ") || record.hotelName || "Custom request"}, ${record.phone}, ${record.email}`;
   const results = await Promise.all([sendEmailNotification(subject, html), sendSmsNotification(sms.slice(0, 1500))]);
   recordNotification(type, record, results);
 }
@@ -555,6 +562,89 @@ async function handleApi(req, res, pathname) {
       return sendJson(res, 201, { contact, message: "Thanks. We received your message and will reply soon." });
     }
 
+    if (req.method === "POST" && pathname === "/api/job-applications") {
+      const payload = await getBody(req);
+      requireFields(payload, [
+        "firstName",
+        "surname",
+        "email",
+        "phone",
+        "idNumber",
+        "city",
+        "streetAddress",
+        "suburb",
+        "postalCode",
+        "yearsExperience",
+        "client1Name",
+        "client1Phone",
+        "describeMe",
+        "motivation"
+      ]);
+
+      const roles = payloadList(payload, "roles");
+      const eligibility = payloadList(payload, "eligibility");
+      const workDays = payloadList(payload, "workDays");
+      const workAreas = payloadList(payload, "workAreas");
+      const workType = payloadList(payload, "workType");
+      const qualifications = payloadList(payload, "qualifications");
+      const skills = payloadList(payload, "skills");
+
+      if (!roles.length) return sendJson(res, 400, { error: "Please select at least one service you want to apply for." });
+      if (eligibility.length < 5) return sendJson(res, 400, { error: "Please confirm the screening requirements." });
+      if (workDays.length < 2) return sendJson(res, 400, { error: "Please select at least two available work days." });
+      if (!workAreas.length) return sendJson(res, 400, { error: "Please select at least one area you can work in." });
+      if (!skills.length) return sendJson(res, 400, { error: "Please select at least one cleaning skill." });
+      if (!clean(payload.consent)) return sendJson(res, 400, { error: "Please confirm consent before submitting." });
+
+      const application = {
+        id: crypto.randomUUID(),
+        reference: reference("FSJ"),
+        referralCode: clean(payload.referralCode),
+        name: `${clean(payload.firstName)} ${clean(payload.surname)}`.trim(),
+        firstName: clean(payload.firstName),
+        surname: clean(payload.surname),
+        email: clean(payload.email).toLowerCase(),
+        phone: clean(payload.phone),
+        idNumber: clean(payload.idNumber),
+        gender: clean(payload.gender),
+        dateOfBirth: clean(payload.dateOfBirth),
+        country: clean(payload.country),
+        province: clean(payload.province),
+        city: clean(payload.city),
+        streetAddress: clean(payload.streetAddress),
+        suburb: clean(payload.suburb),
+        postalCode: clean(payload.postalCode),
+        roles,
+        eligibility,
+        workDays,
+        workAreas,
+        workType,
+        qualifications,
+        skills,
+        yearsExperience: clean(payload.yearsExperience),
+        client1Name: clean(payload.client1Name),
+        client1Phone: clean(payload.client1Phone),
+        client2Name: clean(payload.client2Name),
+        client2Phone: clean(payload.client2Phone),
+        client3Name: clean(payload.client3Name),
+        client3Phone: clean(payload.client3Phone),
+        describeMe: clean(payload.describeMe),
+        grewUpCountry: clean(payload.grewUpCountry),
+        grewUpCity: clean(payload.grewUpCity),
+        hobbies: clean(payload.hobbies),
+        otherLanguages: clean(payload.otherLanguages),
+        motivation: clean(payload.motivation),
+        service: `Job application: ${roles.join(", ")}`,
+        status: "New",
+        createdAt: new Date().toISOString()
+      };
+      const applications = readJson(dataFiles.jobApplications);
+      applications.unshift(application);
+      writeJson(dataFiles.jobApplications, applications);
+      await notifyAdmin("job-application", application);
+      return sendJson(res, 201, { application, message: "Application received. Fresh and Shine will review your details." });
+    }
+
     if (req.method === "GET" && pathname === "/api/my-bookings") {
       const user = getSessionUser(req);
       if (!user) return sendJson(res, 401, { error: "Please log in first." });
@@ -569,6 +659,7 @@ async function handleApi(req, res, pathname) {
         bookings: readJson(dataFiles.bookings),
         quotes: readJson(dataFiles.quotes),
         contacts: readJson(dataFiles.contacts),
+        jobApplications: readJson(dataFiles.jobApplications),
         payments: readJson(dataFiles.payments),
         notifications: readJson(dataFiles.notifications)
       });
@@ -578,7 +669,7 @@ async function handleApi(req, res, pathname) {
       const url = new URL(req.url, `http://${req.headers.host}`);
       if (url.searchParams.get("token") !== ADMIN_TOKEN) return sendJson(res, 401, { error: "Invalid admin token." });
       const payload = await getBody(req);
-      const file = payload.type === "quote" ? dataFiles.quotes : payload.type === "contact" ? dataFiles.contacts : dataFiles.bookings;
+      const file = payload.type === "quote" ? dataFiles.quotes : payload.type === "contact" ? dataFiles.contacts : payload.type === "job-application" ? dataFiles.jobApplications : dataFiles.bookings;
       const rows = readJson(file);
       const index = rows.findIndex((row) => row.id === payload.id);
       if (index === -1) return sendJson(res, 404, { error: "Record not found." });
