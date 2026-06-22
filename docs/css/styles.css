@@ -509,13 +509,27 @@ h3 {
   left: 0;
 }
 
-.testimonial {
-  border-left: 5px solid var(--rose);
+.team-card {
+  padding: 0;
+  overflow: hidden;
 }
 
-.testimonial strong {
-  display: block;
-  margin-top: 18px;
+.team-card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center top;
+  border-bottom: 1px solid var(--line);
+}
+
+.team-body {
+  padding: 22px 24px 24px;
+}
+
+.team-body p {
+  color: var(--blue);
+  font-weight: 800;
+  margin-top: 8px;
 }
 
 .cta-band {
