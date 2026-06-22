@@ -87,6 +87,20 @@
       ]
     },
     {
+      "title": "Full Time Maid Services",
+      "summary": "Monthly full-time maid support for homes, apartments, guesthouses and hospitality properties.",
+      "services": [
+        {
+          "name": "Full Time Maid",
+          "subtitle": "Custom monthly placement based on duties, location and schedule.",
+          "unitLabel": "Monthly Package",
+          "options": [
+            { "label": "Full Time Maid Monthly Range", "price": 5500, "unit": "- R10,000 per month" }
+          ]
+        }
+      ]
+    },
+    {
       "title": "Laundry & Additional Services",
       "summary": "Laundry, ironing, blankets, bedding, towels, and linen-support services.",
       "services": [
@@ -188,6 +202,7 @@
     "Additional charges may apply depending on the condition and size of the property.",
     "Full payment is required before the commencement of housekeeping packages.",
     "Custom quotations are available for hotels, guesthouses, offices, and large-scale cleaning projects.",
+    "Full Time Maid monthly pricing ranges from R5,500 to R10,000 depending on duties, location and schedule.",
     "Travel fees may apply for locations outside our standard service areas."
   ]
 }
